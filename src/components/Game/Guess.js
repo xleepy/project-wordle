@@ -3,15 +3,14 @@ import { range } from "../../utils";
 
 const cells = range(0, 5);
 
-function Guess({ value, validationResult }) {
+function Guess({ value }) {
   return (
     <p className="guess">
       {cells.map((cell) => {
-        const validation = validationResult?.[cell];
-        const char = value?.charAt(cell) ?? "";
+        const { letter = "", status } = value?.[cell] ?? {};
         return (
-          <span key={cell} className={`cell ${validation?.status ?? ""}`}>
-            {char}
+          <span key={cell} className={`cell ${status ?? ""}`}>
+            {letter}
           </span>
         );
       })}

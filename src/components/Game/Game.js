@@ -16,12 +16,9 @@ function Game() {
   const [guesses, setGuesses] = useState([]);
   const [status, setStatus] = useState(null);
 
-  const createGuess = (guess) => {
+  const addNextGuess = (guess) => {
     const validationResult = checkGuess(guess, answer);
-    const newGuesses = [
-      ...guesses,
-      { id: Date.now(), value: guess, validationResult },
-    ];
+    const newGuesses = [...guesses, validationResult];
     setGuesses(newGuesses);
     if (guess === answer) {
       setStatus("happy");
@@ -29,9 +26,7 @@ function Game() {
     }
     if (
       guesses.length >= 5 &&
-      newGuesses.some(
-        (g) => !g.validationResult.every((g) => g.status === "correct")
-      )
+      newGuesses.some((g) => !g.every((g) => g.status === "correct"))
     ) {
       setStatus("sad");
       return;
@@ -40,7 +35,7 @@ function Game() {
   return (
     <>
       <Guesses data={guesses} />
-      <GuessInput isDisabled={!!status} onSubmit={createGuess} />
+      <GuessInput isDisabled={!!status} onSubmit={addNextGuess} />
       {status && <Banner status={status} count={guesses.length} />}
     </>
   );
